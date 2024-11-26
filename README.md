@@ -59,6 +59,8 @@ Search Engine — это многопоточное приложение, кот
 
 4. **Компиляция проекта:**
 
+В командной строке перейдите в корневой католог проекта и последовательно выполните команды:
+
     ```bash
     g++ -std=c++17 -pthread -o SearchEngine src/main.cpp src/ConverterJSON.cpp src/InvertedIndex.cpp src/SearchServer.cpp -Iinclude -I./nlohmann_json/include
     ```
@@ -67,7 +69,7 @@ Search Engine — это многопоточное приложение, кот
 5. **Запуск приложения:**
 
     ```bash
-    ./SearchEngine
+    SearchEngine.exe
     ```
 
 # Конфигурация
