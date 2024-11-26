@@ -79,7 +79,7 @@ Cкачайте библиотеку [nlohmann/json](https://github.com/nlohmann
 {
     "config": {
         "name": "SearchEngine",
-        "version": "1.0",
+        "version": "0.1",
         "max_responses": 5,
         "time_update": 60
     },
