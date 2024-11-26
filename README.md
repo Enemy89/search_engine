@@ -64,7 +64,6 @@ Search Engine — это многопоточное приложение, кот
     ```bash
     g++ -std=c++17 -pthread -o SearchEngine src/main.cpp src/ConverterJSON.cpp src/InvertedIndex.cpp src/SearchServer.cpp -Iinclude -I./nlohmann_json/include
     ```
-    Важно: команда должна выполняться из корневого каталога проекта.
 
 5. **Запуск приложения:**
 
