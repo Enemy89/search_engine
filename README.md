@@ -37,20 +37,7 @@ Search Engine — это многопоточное приложение, кот
 
 2. **Установка библиотеки nlohmann/json:**
 
-    Если используете пакетный менеджер vcpkg:
-
-    ```bash
-    vcpkg install nlohmann-json
-    ```
-
-    Укажите путь к библиотеке при компиляции:
-
-    ```bash
-    g++ -std=c++17 -pthread -o SearchEngine main.cpp ConverterJSON.cpp InvertedIndex.cpp SearchServer.cpp -I<путь_к_vcpkg>/installed/x64-linux/include -ljsoncpp
-    ```
-
-    Альтернативный способ:
-    скачайте библиотеку [nlohmann/json](https://github.com/nlohmann/json) и поместите ее в корень проекта.
+Cкачайте библиотеку [nlohmann/json](https://github.com/nlohmann/json), распакуйте и поместите ее в корень проекта.
 
 3. **Создание необходимых файлов и директорий:**
 
