@@ -7,18 +7,18 @@ SearchServer::SearchServer(InvertedIndex &idx) {
 }
 
 //многопоточная обработка запросов
-std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &inQueries, int responsesLimit) {
+std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &inputQueries, int responsesLimit) {
     std::vector<std::thread> searchThread;
-    if(inQueries.size()>1000)
+    if(inputQueries.size()>1000)
     {
         std::cerr << "The number of requests is more than 1000.";
         resultSearch.resize(1000);
     }
     else
-        resultSearch.resize(inQueries.size());
-    for(int i =0; i < inQueries.size() && inQueries.size() != 1000 ; ++i)
+        resultSearch.resize(inputQueries.size());
+    for(int i =0; i < inputQueries.size() && inputQueries.size() != 1000 ; ++i)
     {
-        searchThread.emplace_back(&SearchServer::handleRequest, this, std::ref(inQueries[i]), i, responsesLimit );
+        searchThread.emplace_back(&SearchServer::handleRequest, this, std::ref(inputQueries[i]), i, responsesLimit );
     }
     for(auto & i : searchThread)
         i.join();

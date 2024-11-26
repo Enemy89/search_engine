@@ -11,7 +11,7 @@
 #include <map>
 #include <sstream>
 #include <nlohmann/json.hpp>
-#include <unordered_set>
+
 
 namespace fs = std::filesystem;
 
@@ -19,7 +19,6 @@ struct Entry
 {
     size_t docId, count;
 
-    // Данный оператор необходим для проведения тестовых сценариев
     bool operator ==(const Entry& other) const {
         return (docId == other.docId &&
                 count == other.count);

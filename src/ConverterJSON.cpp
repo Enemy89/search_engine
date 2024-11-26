@@ -163,6 +163,6 @@ void ConverterJSON::putAnswers(std::vector<std::vector<std::pair<int, float>>> a
         objJson["answers"][requestKey] = requestJson;
     }
 
-    answersFile << std::setw(4) << objJson << std::endl; // Красивое форматирование
+    answersFile << std::setw(4) << objJson << std::endl;
     answersFile.close();
 }

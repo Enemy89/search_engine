@@ -3,13 +3,13 @@
 std::mutex addingDate;
 
 // Обновление базы документов
-void InvertedIndex::updateDocumentBase(std::vector<std::string> inDocs) {
+void InvertedIndex::updateDocumentBase(std::vector<std::string> inputDocuments) {
     std::vector<std::thread> updateThread;
-    for (int i = 0; i < inDocs.size(); ++i) {
+    for (int i = 0; i < inputDocuments.size(); ++i) {
         std::fstream file;
-        file.open(inDocs[i]);
+        file.open(inputDocuments[i]);
         if (!file) {
-            std::cerr << inDocs[i] + " file not found \n";
+            std::cerr << inputDocuments[i] + " file not found \n";
             continue;
         }
         std::string words;
