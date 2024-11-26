@@ -12,7 +12,6 @@
 #include <sstream>
 #include <nlohmann/json.hpp>
 
-
 namespace fs = std::filesystem;
 
 struct Entry

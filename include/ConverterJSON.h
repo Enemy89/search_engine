@@ -8,6 +8,7 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <iomanip>
+#define VERSION_APP "0.1"
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;

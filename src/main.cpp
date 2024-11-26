@@ -33,5 +33,7 @@ int main() {
     }
     converterJson.putAnswers(answers);
 
+    std::cout<<"Successfully. The file answers.json formed."<<std::endl;
+    std::cin.get();
     return 0;
 }

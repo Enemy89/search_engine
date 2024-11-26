@@ -17,7 +17,7 @@ int ConverterJSON::getResponsesLimit() const {
 }
 
 bool ConverterJSON::loadConfig() {
-    std::ifstream configFile("../../config.json");
+    std::ifstream configFile("config.json");
 
     if (!configFile.is_open()) {
         std::cerr << "Config file is missing." << std::endl;
@@ -80,7 +80,7 @@ bool ConverterJSON::loadConfig() {
 
         // Загружаем список файлов
         files.clear();
-        std::string resourcesPath = "../../resources";
+        std::string resourcesPath = "resources";
 
         if (!fs::exists(resourcesPath) || !fs::is_directory(resourcesPath)) {
             std::cerr << "Error: Resources path does not exist or is not a directory." << std::endl;
@@ -98,7 +98,7 @@ bool ConverterJSON::loadConfig() {
         configJson["files"] = files;
 
         // Обновляем конфигурационный файл
-        std::ofstream outputConfigFile("../../config.json");
+        std::ofstream outputConfigFile("config.json");
         if (!outputConfigFile.is_open()) {
             std::cerr << "Error: Unable to write to config file." << std::endl;
             return false;
@@ -119,7 +119,7 @@ std::vector<std::string> ConverterJSON::getRequests() {
     std::vector<std::string> listRequests;
     objJson.clear();
 
-    std::ifstream requestsFile("../../requests.json");
+    std::ifstream requestsFile("requests.json");
     if (!requestsFile)
         std::cerr << "File requests.json not found."<<std::endl;
     requestsFile >> objJson;
@@ -131,7 +131,7 @@ std::vector<std::string> ConverterJSON::getRequests() {
 
 void ConverterJSON::putAnswers(std::vector<std::vector<std::pair<int, float>>> answers)
 {
-    std::ofstream answersFile("../../answers.json");
+    std::ofstream answersFile("answers.json");
     nlohmann::json objJson = {{"answers", {}}};
 
     for (int i = 0; i < answers.size(); ++i)
