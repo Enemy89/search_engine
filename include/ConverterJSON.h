@@ -35,7 +35,7 @@ public:
     //список запросов
     std::vector<std::string> getRequests();
     //запись ответов
-    void putAnswers(std::vector<std::vector<std::pair<int, float>>>answers);
+    void putAnswers(const std::vector<std::vector<std::pair<int, float>>>& answers);
 
     // Вспомогательные методы (проверка и парсинг config)
     bool loadConfig();

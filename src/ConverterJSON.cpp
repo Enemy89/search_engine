@@ -129,8 +129,7 @@ std::vector<std::string> ConverterJSON::getRequests() {
     return listRequests;
 }
 
-void ConverterJSON::putAnswers(std::vector<std::vector<std::pair<int, float>>> answers)
-{
+void ConverterJSON::putAnswers(const std::vector<std::vector<std::pair<int, float>>>& answers) {
     std::ofstream answersFile("answers.json");
     nlohmann::json objJson = {{"answers", {}}};
 

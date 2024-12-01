@@ -31,13 +31,13 @@ private:
 public:
     InvertedIndex()=default;
     //список документов
-    void updateDocumentBase(std::vector<std::string> inDocs);
+    void updateDocumentBase(const std::vector<std::string>& inputDocuments);
     //токен - документ
-    void putFreqDictionary(std::string inWords, int i);
+    void putFreqDictionary(const std::string& inWords, int i);
     //частотный словарь
     std::map<std::string, std::vector<Entry>> getFreqDictionary();
     //частота вхождения
-    std::vector<Entry> getWordCount(const std::string& word);
+    std::vector<Entry> getWordCount(const std::string& word) const;
 };
 
 #endif // INVERTEDINDEX_H

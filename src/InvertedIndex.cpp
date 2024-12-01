@@ -3,7 +3,7 @@
 std::mutex addingDate;
 
 // Обновление базы документов
-void InvertedIndex::updateDocumentBase(std::vector<std::string> inputDocuments) {
+void InvertedIndex::updateDocumentBase(const std::vector<std::string>& inputDocuments) {
     std::vector<std::thread> updateThread;
     for (int i = 0; i < inputDocuments.size(); ++i) {
         std::fstream file;
@@ -23,7 +23,7 @@ void InvertedIndex::updateDocumentBase(std::vector<std::string> inputDocuments) 
 }
 
 //заполнение частотного словаря
-void InvertedIndex::putFreqDictionary(std::string inWords, int i) {
+void InvertedIndex::putFreqDictionary(const std::string& inWords, int i) {
     Entry entry{};
     std::vector<std::string> tokens;
     std::istringstream words(inWords);
@@ -78,7 +78,7 @@ std::map<std::string, std::vector<Entry>> InvertedIndex::getFreqDictionary() {
 }
 
 //проверка количество вхождения слова в частотный словарь
-std::vector<Entry> InvertedIndex::getWordCount(const std::string &word) {
+std::vector<Entry> InvertedIndex::getWordCount(const std::string& word) const {
     auto it = freqDictionary.find(word);
     if(freqDictionary.count(word))
         return it->second;

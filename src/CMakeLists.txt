@@ -20,4 +20,4 @@ add_executable(
 )
 
 # Указываем директории для заголовочных файлов
-target_include_directories(search_engine PRIVATE ${MY_INCLUDE_DIR} ${NLOHMANN_JSON_INCLUDE_DIR})
+target_include_directories(search_engine PRIVATE ${MY_INCLUDE_DIR} ${nlohmann_json_SOURCE_DIR}/include)

@@ -27,7 +27,7 @@ private:
 public:
     explicit SearchServer(InvertedIndex &idx);
     //регулирующая функция поиска (многопоточная обработка)
-    std::vector<std::vector<RelativeIndex>> search(const std::vector<std::string> &inQueries, int responsesLimit);
+    std::vector<std::vector<RelativeIndex>> search(const std::vector<std::string>& inputQueries, int responsesLimit);
     //основная функция поиска и определения релевантности (сама логика)
     void handleRequest(const std::string& request, int i, int responsesLimit);
 };
