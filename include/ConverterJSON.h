@@ -39,6 +39,7 @@ public:
 
     // Вспомогательные методы (проверка и парсинг config)
     bool loadConfig();
+    static std::string getBasePath();
 };
 
 #endif // CONVERTERJSON_H
