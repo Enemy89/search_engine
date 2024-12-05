@@ -45,7 +45,7 @@ Search Engine — это многопоточное приложение, кот
    В командной строке перейдите в корневой католог проекта и выполните команду:
 
     ```bash
-    g++ -std=c++17 -pthread -o SearchEngine src/main.cpp src/ConverterJSON.cpp src/InvertedIndex.cpp src/SearchServer.cpp -Iinclude -I./nlohmann_json/include
+    g++ -std=c++17 -pthread -o SearchEngine src/main.cpp src/ConverterJSON.cpp src/InvertedIndex.cpp src/SearchServer.cpp -Iinclude -Icmake-build-debug/_deps/nlohmann_json-src/include
     ```
 
 4. **Запуск приложения:**
