@@ -12,12 +12,12 @@ add_executable(
         search_engine
         main.cpp
         SearchServer.cpp
-        ${MY_INCLUDE_DIR}/SearchServer.h
         InvertedIndex.cpp
-        ${MY_INCLUDE_DIR}/InvertedIndex.h
         ConverterJSON.cpp
-        ${MY_INCLUDE_DIR}/ConverterJSON.h
 )
 
-# Указываем директории для заголовочных файлов
-target_include_directories(search_engine PRIVATE ${MY_INCLUDE_DIR} ${nlohmann_json_SOURCE_DIR}/include)
+# Указываем пути к заголовочным файлам
+target_include_directories(search_engine PRIVATE ${MY_INCLUDE_DIR})
+
+# Подключаем nlohmann/json
+target_link_libraries(search_engine PRIVATE nlohmann_json::nlohmann_json)

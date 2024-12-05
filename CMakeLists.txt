@@ -9,9 +9,10 @@ set(MY_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 include(FetchContent)
 FetchContent_Declare(
         nlohmann_json
-        URL https://github.com/nlohmann/json/archive/refs/heads/develop.zip
+        URL https://github.com/nlohmann/json/archive/refs/tags/v3.11.2.zip
 )
 FetchContent_MakeAvailable(nlohmann_json)
+include_directories(${nlohmann_json_SOURCE_DIR})
 
 # Переменная для директории с заголовками nlohmann/json
 set(NLOHMANN_JSON_INCLUDE_DIR ${nlohmann_json_SOURCE_DIR})
