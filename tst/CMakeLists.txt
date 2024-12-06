@@ -20,15 +20,21 @@ enable_testing()
 add_executable(
         hello_test
         hello_test.cc
-        ${MY_INCLUDE_DIR}/InvertedIndex.h
         ${CMAKE_SOURCE_DIR}/src/InvertedIndex.cpp
-        ${MY_INCLUDE_DIR}/SearchServer.h
         ${CMAKE_SOURCE_DIR}/src/SearchServer.cpp
 )
 
-# Подключаем директории и библиотеки
-target_include_directories(hello_test PRIVATE ${MY_INCLUDE_DIR} ${NLOHMANN_JSON_INCLUDE_DIR})
-target_link_libraries(hello_test PRIVATE GTest::gtest_main)
+# Подключаем директории с заголовками
+target_include_directories(hello_test PRIVATE
+        ${MY_INCLUDE_DIR}
+        ${NLOHMANN_JSON_INCLUDE_DIR}
+        )
+
+# Подключаем библиотеки
+target_link_libraries(hello_test PRIVATE
+        nlohmann_json::nlohmann_json
+        GTest::gtest_main
+        )
 
 # Автоматическое обнаружение тестов
 include(GoogleTest)

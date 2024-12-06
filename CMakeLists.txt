@@ -1,41 +1,22 @@
 cmake_minimum_required(VERSION 3.24)
-project(search_engine_tests)
+project(search_engine VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 17)
+set(VERSION_APP ${search_engine_VERSION_MAJOR}.${search_engine_VERSION_MINOR})
+set(MY_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 
-# Подключаем GoogleTest
+# Подключаем nlohmann/json через FetchContent
 include(FetchContent)
 FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
+        nlohmann_json
+        URL https://github.com/nlohmann/json/archive/refs/tags/v3.11.2.zip
 )
+FetchContent_MakeAvailable(nlohmann_json)
+include_directories(${nlohmann_json_SOURCE_DIR})
 
-set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+# Переменная для директории с заголовками nlohmann/json
+set(NLOHMANN_JSON_INCLUDE_DIR ${nlohmann_json_SOURCE_DIR})
 
-enable_testing()
-
-# Создаём исполняемый файл для тестов
-add_executable(
-        hello_test
-        hello_test.cc
-        ${CMAKE_SOURCE_DIR}/src/InvertedIndex.cpp
-        ${CMAKE_SOURCE_DIR}/src/SearchServer.cpp
-)
-
-# Подключаем директории с заголовками
-target_include_directories(hello_test PRIVATE
-        ${MY_INCLUDE_DIR}
-        ${NLOHMANN_JSON_INCLUDE_DIR}
-        )
-
-# Подключаем библиотеки
-target_link_libraries(hello_test PRIVATE
-        nlohmann_json::nlohmann_json
-        GTest::gtest_main
-        )
-
-# Автоматическое обнаружение тестов
-include(GoogleTest)
-gtest_discover_tests(hello_test)
+# Подключаем исходники и тесты
+add_subdirectory(src)
+add_subdirectory(tst)
