@@ -130,7 +130,13 @@ std::vector<std::string> ConverterJSON::getRequests() {
 }
 
 void ConverterJSON::putAnswers(const std::vector<std::vector<std::pair<int, float>>>& answers) {
+    // Пытаемся открыть файл
     std::ofstream answersFile("answers.json");
+    if (!answersFile) {
+        std::cerr << "Error: Could not create or open file answers.json for writing." << std::endl;
+        std::exit(EXIT_FAILURE); // Завершаем программу
+    }
+
     nlohmann::json objJson = {{"answers", {}}};
 
     for (int i = 0; i < answers.size(); ++i)
