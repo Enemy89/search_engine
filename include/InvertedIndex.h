@@ -6,10 +6,8 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include <mutex>
-#include <thread>
+#include <future>
 #include <map>
-#include <sstream>
 #include <nlohmann/json.hpp>
 
 namespace fs = std::filesystem;
@@ -28,6 +26,8 @@ class InvertedIndex {
 private:
     std::vector<std::string> docs;
     std::map<std::string, std::vector<Entry>> freqDictionary;
+    static constexpr int MAX_WORD_LENGTH = 100;
+    static constexpr int MAX_TOKENS = 1000;
 public:
     InvertedIndex()=default;
     //список документов

@@ -4,7 +4,8 @@ std::mutex addingDate;
 
 // Обновление базы документов
 void InvertedIndex::updateDocumentBase(const std::vector<std::string>& inputDocuments) {
-    std::vector<std::thread> updateThread;
+    std::vector<std::future<void>> futures;
+
     for (int i = 0; i < inputDocuments.size(); ++i) {
         std::fstream file;
         file.open(inputDocuments[i]);
@@ -16,75 +17,89 @@ void InvertedIndex::updateDocumentBase(const std::vector<std::string>& inputDocu
         std::getline(file, words);
         docs.push_back(words);
         file.close();
-        updateThread.emplace_back(&InvertedIndex::putFreqDictionary, this, words, i);
+
+        // Запуск задачи асинхронно
+        futures.push_back(std::async(std::launch::async, &InvertedIndex::putFreqDictionary, this, words, i));
     }
-    for(auto & i : updateThread)
-        i.join();
+
+    // Ожидание завершения всех задач
+    for (auto& future : futures) {
+        future.get();
+    }
 }
 
-//заполнение частотного словаря
+// Заполнение частотного словаря
 void InvertedIndex::putFreqDictionary(const std::string& inWords, int i) {
     Entry entry{};
     std::vector<std::string> tokens;
     std::istringstream words(inWords);
     std::string oneWord;
 
-    // Разбиваем строку на слова и сразу исключаем пустые или слишком длинные
+    // Разбиваем строку на слова и исключаем пустые или слишком длинные
     while (std::getline(words, oneWord, ' ')) {
-        if (!oneWord.empty() && oneWord.length() <= 100) {
+        if (!oneWord.empty() && oneWord.length() <= MAX_WORD_LENGTH) {
             tokens.push_back(oneWord);
-        } else if (oneWord.length() > 100) {
-            std::cerr << "Incorrect size words in file: " << i << " word: "<< oneWord<< std::endl;
+        } else if (oneWord.length() > MAX_WORD_LENGTH) {
+            std::cerr << "Incorrect size words in file: " << i << " word: " << oneWord << std::endl;
         }
     }
 
     // Проверяем, не превышает ли количество слов лимит
-    if (tokens.size() > 1000) {
-        std::cerr << "Incorrect size file:" << i << std::endl;
+    if (tokens.size() > MAX_TOKENS) {
+        std::cerr << "Incorrect size file: " << i << std::endl;
         return;
     }
 
-    // Обрабатываем токены
-    for (const auto &word : tokens) {
-        std::lock_guard<std::mutex> guard(addingDate);
+    // Локальный словарь для текущей обработки
+    std::unordered_map<std::string, std::vector<Entry>> localFreqDictionary;
 
-        auto it = freqDictionary.find(word);
-        if (it == freqDictionary.end()) {
-            // Если слово не найдено, добавляем новую запись
+    // Обрабатываем токены
+    for (const auto& word : tokens) {
+        auto& entries = localFreqDictionary[word];
+        auto found = std::find_if(entries.begin(), entries.end(),
+                                  [i](const Entry& e) { return e.docId == i; });
+
+        if (found != entries.end()) {
+            found->count++;
+        } else {
             entry.docId = i;
             entry.count = 1;
-            freqDictionary[word] = {entry};
-        } else {
-            // Если слово найдено, проверяем документы
-            auto &entries = it->second;
-            auto found = std::find_if(entries.begin(), entries.end(),
-                                      [i](const Entry &e) { return e.docId == i; });
+            entries.push_back(entry);
+        }
+    }
 
-            if (found != entries.end()) {
-                // Слово уже встречалось в этом документе, увеличиваем счетчик
-                found->count++;
-            } else {
-                // Слово не встречалось в этом документе, добавляем новую запись
-                entry.docId = i;
-                entry.count = 1;
-                entries.push_back(entry);
+    // Сливаем локальные данные с глобальным словарём
+    {
+        std::lock_guard<std::mutex> guard(addingDate);
+        for (const auto& [word, entries] : localFreqDictionary) {
+            auto& globalEntries = freqDictionary[word];
+            for (const auto& localEntry : entries) {
+                auto found = std::find_if(globalEntries.begin(), globalEntries.end(),
+                                          [docId = localEntry.docId](const Entry& e) {
+                                              return e.docId == docId;
+                                          });
+
+                if (found != globalEntries.end()) {
+                    found->count += localEntry.count;
+                } else {
+                    globalEntries.push_back(localEntry);
+                }
             }
         }
     }
 }
 
+// Получение частотного словаря
 std::map<std::string, std::vector<Entry>> InvertedIndex::getFreqDictionary() {
     return freqDictionary;
 }
 
-//проверка количество вхождения слова в частотный словарь
+// Проверка количества вхождения слова в частотный словарь
 std::vector<Entry> InvertedIndex::getWordCount(const std::string& word) const {
     auto it = freqDictionary.find(word);
-    if(freqDictionary.count(word))
+    if (freqDictionary.count(word)) {
         return it->second;
-    else
-    {
-        std::vector<Entry> emptyVector;
-        return emptyVector;
+    } else {
+        return {};
     }
 }

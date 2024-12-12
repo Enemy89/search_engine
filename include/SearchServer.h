@@ -23,6 +23,8 @@ class SearchServer {
 private:
     InvertedIndex index;
     std::vector<std::vector<RelativeIndex>> resultSearch;
+    static constexpr int MAX_REQUESTS = 1000;
+    static constexpr int MAX_WORDS_IN_REQUEST = 10;
 
 public:
     explicit SearchServer(InvertedIndex &idx);

@@ -9,14 +9,14 @@ SearchServer::SearchServer(InvertedIndex &idx) {
 //многопоточная обработка запросов
 std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &inputQueries, int responsesLimit) {
     std::vector<std::thread> searchThread;
-    if(inputQueries.size()>1000)
+    if(inputQueries.size()>MAX_REQUESTS)
     {
         std::cerr << "The number of requests is more than 1000.";
-        resultSearch.resize(1000);
+        resultSearch.resize(MAX_REQUESTS);
     }
     else
         resultSearch.resize(inputQueries.size());
-    for(int i =0; i < inputQueries.size() && inputQueries.size() != 1000 ; ++i)
+    for(int i =0; i < inputQueries.size() && inputQueries.size() != MAX_REQUESTS ; ++i)
     {
         searchThread.emplace_back(&SearchServer::handleRequest, this, std::ref(inputQueries[i]), i, responsesLimit );
     }
@@ -39,7 +39,7 @@ void SearchServer::handleRequest(const std::string& request, int numRequest, int
     }
 
     // Проверяем количество слов в запросе
-    if (words.size() > 10) {
+    if (words.size() > MAX_WORDS_IN_REQUEST) {
         std::cerr << "Incorrect size request: " << numRequest << std::endl;
         return;
     }
